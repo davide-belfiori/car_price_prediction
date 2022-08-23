@@ -254,9 +254,9 @@ box()
 
 ```
 
-### **ModelL 1.3**: Tuned Random Forest with Features of Interest
+### **Model 1.3**: Tuned Random Forest with Features of Interest
 
-Fit the model
+Fit the model ...
 
 ```{r}
 rf_reg_2 = train(MSRP ~ .,
@@ -265,9 +265,16 @@ rf_reg_2 = train(MSRP ~ .,
                  tuneGrid = expand.grid(mtry = 1:(dim(train_set_foi)[2] - 1)),
                  ntree = 10,
                  nodesize = 5,
-                 trControl = trainControl(method = 'cv', 
-                                          number = 10, 
+                 trControl = trainControl(method = 'cv',
+                                          number = 10,
                                           selectionFunction = "oneSE"))
+rf_reg_2
+```
+
+... or load trained forest
+
+```{r}
+load("models/m_1_3_tuned_random_forest.RData")
 rf_reg_2
 ```
 
@@ -311,7 +318,7 @@ smef::describe(X_train_scaled)
 smef::describe(X_valid_scaled)
 ```
 
-Fit the model
+Fit the model ...
 
 ```{r}
 nn_reg = train(x = X_train_scaled,
@@ -325,6 +332,13 @@ nn_reg = train(x = X_train_scaled,
                                        number = 10, 
                                        selectionFunction = "oneSE"))
 nn_reg
+```
+
+... or load trained network
+
+```{r}
+load("models/m_2_neural_network.RData")
+print(nn_reg)
 ```
 
 Calculate RMSE on train set
@@ -377,9 +391,11 @@ young_lin_reg = lm(MSRP ~ Age + Engine_HP + Age:Engine_HP,
 summary(young_lin_reg)
 ```
 
-Calculate RMSE on validation set
+Calculate RMSE on training and validation set
 
 ```{r}
+y_pred = predict(young_lin_reg, newdata = young_train_set)
+rmse(young_train_set[, MSRP], y_pred)
 y_pred = predict(young_lin_reg, newdata = young_valid_set)
 rmse(young_valid_set[, MSRP], y_pred)
 ```
@@ -421,9 +437,11 @@ old_lin_reg = lm(MSRP ~ Age + Age:Engine_HP + poly(Engine_HP, 2),
 summary(old_lin_reg)
 ```
 
-Calculate RMSE on validation set
+Calculate RMSE on training and validation set
 
 ```{r}
+y_pred = predict(old_lin_reg, newdata = old_train_set)
+rmse(old_train_set[, MSRP], y_pred)
 y_pred = predict(old_lin_reg, newdata = old_valid_set)
 rmse(old_valid_set[, MSRP], y_pred)
 ```
@@ -455,8 +473,7 @@ old_plot <- add_trace(old_plot, x = axis_x, y = axis_y, z = reg_surface, type = 
 old_plot
 #
 ```
-
-Try with only **Engine_HP**
+Using only **Engine_HP**
 
 ```{r}
 old_lin_reg = lm(MSRP ~ poly(Engine_HP, 2),
@@ -464,9 +481,11 @@ old_lin_reg = lm(MSRP ~ poly(Engine_HP, 2),
 summary(old_lin_reg)
 ```
 
-Calculate RMSE on validation set
+Calculate RMSE on training and validation set
 
 ```{r}
+y_pred = predict(old_lin_reg, newdata = old_train_set)
+rmse(old_train_set[, MSRP], y_pred)
 y_pred = predict(old_lin_reg, newdata = old_valid_set)
 rmse(old_valid_set[, MSRP], y_pred)
 ```
