@@ -471,8 +471,8 @@ reg_surface <- acast(reg_surface, Engine_HP ~ Age, value.var = "MSRP")
 old_plot <- plot_ly(old_valid_set, x = ~Age, y = ~Engine_HP, z = ~MSRP, type = "scatter3d", size = 1, mode ="markers")
 old_plot <- add_trace(old_plot, x = axis_x, y = axis_y, z = reg_surface, type = "surface")
 old_plot
-#
 ```
+
 Using only **Engine_HP**
 
 ```{r}
@@ -543,12 +543,12 @@ Save as csv file
 **MODEL 3** : Linear Regression
 
 ```{r}
-
 young_car_test = car_test[car_test[, Age < age_ths]]
-y_pred_new = predict(young_lin_reg, newdata = young_car_test[, top_feat, with=F])
+y_pred_new = predict(young_lin_reg, newdata = young_car_test)
 old_car_test = car_test[car_test[, Age >= age_ths]]
-y_pred_old = predict(old_lin_reg, newdata = old_car_test[, top_feat, with=F])
+y_pred_old = predict(old_lin_reg, newdata = old_car_test)
 ```
+
 
 Save as csv file
 

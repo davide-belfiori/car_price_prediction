@@ -446,9 +446,9 @@ y_pred_nn = predict(nn_reg, car_test_scaled)
 # MODEL 3 : Linear Regression
 
 young_car_test = car_test[car_test[, Age < age_ths]]
-y_pred_new = predict(young_lin_reg, newdata = young_car_test[, top_feat, with=F])
+y_pred_new = predict(young_lin_reg, newdata = young_car_test)
 old_car_test = car_test[car_test[, Age >= age_ths]]
-y_pred_old = predict(old_lin_reg, newdata = old_car_test[, top_feat, with=F])
+y_pred_old = predict(old_lin_reg, newdata = old_car_test)
 
 # Save as csv file
 
